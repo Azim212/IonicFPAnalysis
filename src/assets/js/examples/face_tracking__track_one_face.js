@@ -167,7 +167,12 @@ export const run = () => {
 
 export const stopAndCollate = () => {
   closeCamera();
-  return emotionData;
+  var rtnEmotionData = emotionData;
+  lmData = "";
+  count = 0;
+  emotionData = [];
+
+  return rtnEmotionData;
 }
 
 timeoutId = setTimeout(function () { run() }, 1000)

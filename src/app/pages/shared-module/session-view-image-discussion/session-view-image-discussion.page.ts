@@ -68,6 +68,8 @@ export class SessionViewImageDiscussionPage implements OnInit {
 
     console.log("BORED (s) " + durBored)
     console.log("FRUS (s) " + durFrus)
+
+    // TODO - Send API call to db to store variables. Student id, assignment id, assignment discussion id, bored dur, frus dur, *cant rmb*
   }
   getDuration() {
     //Calculates the time the user spends on this page, returns value in ms. 1000ms = 1s

@@ -7,9 +7,12 @@
     <ion-segment-button class="{{isactiveassignment}}" value="assignment">
       <ion-label>Assignment</ion-label>
     </ion-segment-button>
-    <ion-segment-button class="{{isactiveanalysis}}" value="analysis">
-      <ion-label>Analysis</ion-label>
-    </ion-segment-button>
+    <!-- Analysis segment only shows on teacher views. Not coded yet. -->
+    <!-- <div *ngIf=""> -->
+      <ion-segment-button class="{{isactiveanalysis}}" value="analysis">
+        <ion-label>Analysis</ion-label>
+      </ion-segment-button>
+    <!-- </div> -->
   </ion-segment>
 </ion-header>
 
@@ -66,9 +69,11 @@
                 <img style="width:10em;height:10em" (click)="presentModalDiscussImage(asgmtlist.asgmtDiscuss_Data)"
                   *ngIf="asgmtlist.asgmtDiscuss_Data!=null" [src]="this.display(asgmtlist.asgmtDiscuss_Data)"><br />
                 <ion-label style="font-size: medium;" *ngIf="asgmtlist.created_By_Username!=null">Commented By:
-                  <b>{{asgmtlist.created_By_Username}} ({{asgmtlist.created_By_Level}})</b></ion-label><br />
+                  <b>{{asgmtlist.created_By_Username}} ({{asgmtlist.created_By_Level}})</b>
+                </ion-label><br />
                 <ion-label style="font-size: medium;" *ngIf="asgmtlist.created_By_Username==null">Commented By:
-                  <b>{{tutornamefordisplay}}</b></ion-label><br />
+                  <b>{{tutornamefordisplay}}</b>
+                </ion-label><br />
               </h2>
             </div>
           </div>

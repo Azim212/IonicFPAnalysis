@@ -7,9 +7,9 @@
     <ion-segment-button class="{{isactiveassignment}}" value="assignment">
       <ion-label>Assignment</ion-label>
     </ion-segment-button>
-      <ion-segment-button class="{{isactiveanalysis}}" value="analysis">
-        <ion-label>Analysis</ion-label>
-      </ion-segment-button>
+    <ion-segment-button class="{{isactiveanalysis}}" value="analysis">
+      <ion-label>Analysis</ion-label>
+    </ion-segment-button>
   </ion-segment>
 </ion-header>
 
@@ -79,10 +79,16 @@
     </div>
     <!-- </div> -->
   </div>
-  <div *ngIf="segmentModel === 'analysis'">
-    <ion-col>
-      <div style="text-align: center;">Analysis Tab</div>
-    </ion-col>
+  <div [hidden]="!(segmentModel === 'analysis')">
+    <ion-card class="welcome-card">
+      <ion-card-header>
+        <ion-card-subtitle>IN SECONDS</ion-card-subtitle>
+        <ion-card-title>Duration of Emotion Experienced</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <canvas height="500" #barChart></canvas>
+      </ion-card-content>
+    </ion-card>
   </div>
 </ion-content>
 <ion-footer>

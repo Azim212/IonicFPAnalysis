@@ -1,4 +1,4 @@
-import { Component, OnInit, NgZone } from '@angular/core';
+import { Component, OnInit, NgZone, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AssignmentsService } from '../../services/assignments.service';
 import { ModalController, Platform } from '@ionic/angular';
@@ -13,6 +13,7 @@ import { SessionMyPage } from '../session-my/session-my.page';
 import { Observable } from 'rxjs/internal/Observable';
 import { HTTP } from '@ionic-native/http/ngx';
 import { TestBed } from '@angular/core/testing';
+import { Chart } from 'chart.js';
 @Component({
   selector: 'app-session-assignment-view',
   templateUrl: './session-assignment-view.page.html',
@@ -26,6 +27,8 @@ export class SessionAssignmentViewPage implements OnInit {
   test2: any;
   refreshvalue: boolean = false;
   test3: any;
+  @ViewChild('barChart') barChart;
+  bars: any;
 
   constructor(private ngZone: NgZone, private nativeHttp: HTTP, private globalService: GlobalService, private platform: Platform, private sessionmypage: SessionMyPage, public dms: DomSanitizer, private router: Router, private activatedRoute: ActivatedRoute, private modalController: ModalController, private assignmentsService: AssignmentsService, private storage: Storage, private networkService: NetworkService) { }
 
@@ -51,6 +54,7 @@ export class SessionAssignmentViewPage implements OnInit {
     this.platform.backButton.subscribeWithPriority(10, () => {
       this.router.navigateByUrl('tabs/session-view/session-view/' + this.sessionid)
     });
+
   }
 
   /*Get AssignmentList*/
@@ -166,6 +170,8 @@ export class SessionAssignmentViewPage implements OnInit {
       this.isactiveassignment = "inactivesegment";
       this.isactivevideoorvoice = "inactivesegment";
       this.isactiveanalysis = "activesegment";
+
+      this.createBarChart();
     }
   }
   /*Chat Pop up*/
@@ -233,14 +239,72 @@ export class SessionAssignmentViewPage implements OnInit {
     });
     return await modal.present();
   }
-  loadAnalysisTab() {
+  createBarChart() {
+    let ctx = this.barChart.nativeElement
+    ctx.height = 500
+
     // Student id, assignment id, assignment discussion id, bored dur, frus dur, duration
+    let datasets = 10
+
     let student_id = 1
     let asgmt_id = 1
     let asgmt_disc_id = 1
     let bored_dur = 8
     let frus_dur = 12
-    let dur = 30
+    let total_dur = 30
+
+    let xAxisLabels = [];
+    let boredDurData = [];
+    let frusDurData = [];
+    let totalDurData = [];
+
+    for (var i = 0; i < datasets; i++) {
+      let tmp = student_id + ", " + asgmt_id + ", " + asgmt_disc_id
+
+      boredDurData.push(bored_dur)
+      frusDurData.push(frus_dur)
+      totalDurData.push(total_dur)
+      xAxisLabels.push(tmp)
+
+      bored_dur = bored_dur + 2
+      frus_dur = frus_dur + 1
+      total_dur = total_dur + 5
+      student_id++
+      asgmt_disc_id++
+      asgmt_id++
+    }
+
+
+    this.bars = new Chart(this.barChart.nativeElement, {
+      type: 'horizontalBar',
+      data: {
+        labels: xAxisLabels,
+        datasets: [{
+          label: "Boredom",
+          data: boredDurData,
+          backgroundColor: 'rgb(0, 85, 255)',
+        },
+        {
+          label: "Frustration",
+          data: frusDurData,
+          backgroundColor: 'rgb(255, 0, 0)',
+        },
+        {
+          label: "Total",
+          data: totalDurData,
+          backgroundColor: 'rgb(69, 69, 69)',
+        }]
+      },
+      options: {
+        scales: {
+          yAxes: [{
+            ticks: {
+              beginAtZero: true
+            }
+          }]
+        }
+      }
+    })
 
 
   }

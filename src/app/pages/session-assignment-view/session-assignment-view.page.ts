@@ -54,9 +54,6 @@ export class SessionAssignmentViewPage implements OnInit {
   }
 
   /*Get AssignmentList*/
-
-
-
   getAssignmentList() {
     this.sessionstatusended = SessionStatus.SESSION_STATUS_ENDED;
     // Get the ID that was passed with the URL
@@ -235,5 +232,16 @@ export class SessionAssignmentViewPage implements OnInit {
       }
     });
     return await modal.present();
+  }
+  loadAnalysisTab() {
+    // Student id, assignment id, assignment discussion id, bored dur, frus dur, duration
+    let student_id = 1
+    let asgmt_id = 1
+    let asgmt_disc_id = 1
+    let bored_dur = 8
+    let frus_dur = 12
+    let duration = 30
+
+    
   }
 }

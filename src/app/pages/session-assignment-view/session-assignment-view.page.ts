@@ -240,8 +240,8 @@ export class SessionAssignmentViewPage implements OnInit {
     let asgmt_disc_id = 1
     let bored_dur = 8
     let frus_dur = 12
-    let duration = 30
+    let dur = 30
 
-    
+
   }
 }

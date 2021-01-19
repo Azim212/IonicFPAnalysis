@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget id="slp.app.stud" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>SLP - Analysis(S)</name>
+    <name>SLP(S)</name>
     <description>Student Learning Platform (for Student)</description>
     <author email="hi@ionicframework.com" href="http://ionicframework.com/">UPs Team</author>
     <content src="index.html" />

@@ -80,13 +80,13 @@
     <!-- </div> -->
   </div>
   <div [hidden]="!(segmentModel === 'analysis')">
-    <ion-card class="welcome-card">
+    <ion-card class="card-chart">
       <ion-card-header>
         <ion-card-subtitle>IN SECONDS</ion-card-subtitle>
         <ion-card-title>Duration of Emotion Experienced</ion-card-title>
       </ion-card-header>
       <ion-card-content>
-        <canvas height="500" #barChart></canvas>
+        <canvas #barChart></canvas>
       </ion-card-content>
     </ion-card>
   </div>

@@ -159,14 +159,15 @@ export class SessionAssignmentViewPage implements OnInit {
       this.isactiveassignment = "inactivesegment";
       this.isactivevideoorvoice = "activesegment";
       this.isactiveanalysis = "inactivesegment";
+
     }
     else if (this.segmentModel == "assignment") {
       this.isactiveassignment = "activesegment";
       this.isactivevideoorvoice = "inactivesegment";
       this.isactiveanalysis = "inactivesegment";
+
     }
     else if (this.segmentModel == "analysis") {
-      // console.log("analysis tab")
       this.isactiveassignment = "inactivesegment";
       this.isactivevideoorvoice = "inactivesegment";
       this.isactiveanalysis = "activesegment";
@@ -240,8 +241,9 @@ export class SessionAssignmentViewPage implements OnInit {
     return await modal.present();
   }
   createBarChart() {
+    console.log("ctx: ", this.barChart.nativeElement)
     let ctx = this.barChart.nativeElement
-    ctx.height = 500
+    ctx.height = 1000
 
     // Student id, assignment id, assignment discussion id, bored dur, frus dur, duration
     let datasets = 10
@@ -275,7 +277,7 @@ export class SessionAssignmentViewPage implements OnInit {
     }
 
 
-    this.bars = new Chart(this.barChart.nativeElement, {
+    this.bars = new Chart(ctx, {
       type: 'horizontalBar',
       data: {
         labels: xAxisLabels,

@@ -1,11 +1,11 @@
 cordova.define('cordova/plugin_list', function(require, exports, module) {
   module.exports = [
     {
-      "id": "cordova-plugin-email-composer.EmailComposer",
-      "file": "plugins/cordova-plugin-email-composer/www/email_composer.js",
-      "pluginId": "cordova-plugin-email-composer",
+      "id": "com-badrit-base64.Base64",
+      "file": "plugins/com-badrit-base64/www/Base64.js",
+      "pluginId": "com-badrit-base64",
       "clobbers": [
-        "cordova.plugins.email"
+        "navigator.Base64"
       ]
     },
     {
@@ -255,6 +255,14 @@ cordova.define('cordova/plugin_list', function(require, exports, module) {
       ]
     },
     {
+      "id": "cordova-plugin-badge.Badge",
+      "file": "plugins/cordova-plugin-badge/www/badge.js",
+      "pluginId": "cordova-plugin-badge",
+      "clobbers": [
+        "cordova.plugins.notification.badge"
+      ]
+    },
+    {
       "id": "cordova-plugin-camera.Camera",
       "file": "plugins/cordova-plugin-camera/www/CameraConstants.js",
       "pluginId": "cordova-plugin-camera",
@@ -287,36 +295,11 @@ cordova.define('cordova/plugin_list', function(require, exports, module) {
       ]
     },
     {
-      "id": "com-badrit-base64.Base64",
-      "file": "plugins/com-badrit-base64/www/Base64.js",
-      "pluginId": "com-badrit-base64",
+      "id": "cordova-plugin-datepicker.DatePicker",
+      "file": "plugins/cordova-plugin-datepicker/www/android/DatePicker.js",
+      "pluginId": "cordova-plugin-datepicker",
       "clobbers": [
-        "navigator.Base64"
-      ]
-    },
-    {
-      "id": "cordova-plugin-network-information.network",
-      "file": "plugins/cordova-plugin-network-information/www/network.js",
-      "pluginId": "cordova-plugin-network-information",
-      "clobbers": [
-        "navigator.connection",
-        "navigator.network.connection"
-      ]
-    },
-    {
-      "id": "cordova-plugin-network-information.Connection",
-      "file": "plugins/cordova-plugin-network-information/www/Connection.js",
-      "pluginId": "cordova-plugin-network-information",
-      "clobbers": [
-        "Connection"
-      ]
-    },
-    {
-      "id": "cordova-plugin-statusbar.statusbar",
-      "file": "plugins/cordova-plugin-statusbar/www/statusbar.js",
-      "pluginId": "cordova-plugin-statusbar",
-      "clobbers": [
-        "window.StatusBar"
+        "datePicker"
       ]
     },
     {
@@ -328,19 +311,11 @@ cordova.define('cordova/plugin_list', function(require, exports, module) {
       ]
     },
     {
-      "id": "cordova-plugin-splashscreen.SplashScreen",
-      "file": "plugins/cordova-plugin-splashscreen/www/splashscreen.js",
-      "pluginId": "cordova-plugin-splashscreen",
+      "id": "cordova-plugin-email-composer.EmailComposer",
+      "file": "plugins/cordova-plugin-email-composer/www/email_composer.js",
+      "pluginId": "cordova-plugin-email-composer",
       "clobbers": [
-        "navigator.splashscreen"
-      ]
-    },
-    {
-      "id": "cordova-plugin-ionic-webview.IonicWebView",
-      "file": "plugins/cordova-plugin-ionic-webview/src/www/util.js",
-      "pluginId": "cordova-plugin-ionic-webview",
-      "clobbers": [
-        "Ionic.WebView"
+        "cordova.plugins.email"
       ]
     },
     {
@@ -352,27 +327,11 @@ cordova.define('cordova/plugin_list', function(require, exports, module) {
       ]
     },
     {
-      "id": "cordova-sms-plugin.Sms",
-      "file": "plugins/cordova-sms-plugin/www/sms.js",
-      "pluginId": "cordova-sms-plugin",
+      "id": "cordova-plugin-ionic-webview.IonicWebView",
+      "file": "plugins/cordova-plugin-ionic-webview/src/www/util.js",
+      "pluginId": "cordova-plugin-ionic-webview",
       "clobbers": [
-        "window.sms"
-      ]
-    },
-    {
-      "id": "cordova-plugin-datepicker.DatePicker",
-      "file": "plugins/cordova-plugin-datepicker/www/android/DatePicker.js",
-      "pluginId": "cordova-plugin-datepicker",
-      "clobbers": [
-        "datePicker"
-      ]
-    },
-    {
-      "id": "cordova-plugin-badge.Badge",
-      "file": "plugins/cordova-plugin-badge/www/badge.js",
-      "pluginId": "cordova-plugin-badge",
-      "clobbers": [
-        "cordova.plugins.notification.badge"
+        "Ionic.WebView"
       ]
     },
     {
@@ -400,24 +359,65 @@ cordova.define('cordova/plugin_list', function(require, exports, module) {
         "cordova.plugins.notification.local.core",
         "plugin.notification.local.core"
       ]
+    },
+    {
+      "id": "cordova-plugin-network-information.network",
+      "file": "plugins/cordova-plugin-network-information/www/network.js",
+      "pluginId": "cordova-plugin-network-information",
+      "clobbers": [
+        "navigator.connection",
+        "navigator.network.connection"
+      ]
+    },
+    {
+      "id": "cordova-plugin-network-information.Connection",
+      "file": "plugins/cordova-plugin-network-information/www/Connection.js",
+      "pluginId": "cordova-plugin-network-information",
+      "clobbers": [
+        "Connection"
+      ]
+    },
+    {
+      "id": "cordova-plugin-splashscreen.SplashScreen",
+      "file": "plugins/cordova-plugin-splashscreen/www/splashscreen.js",
+      "pluginId": "cordova-plugin-splashscreen",
+      "clobbers": [
+        "navigator.splashscreen"
+      ]
+    },
+    {
+      "id": "cordova-plugin-statusbar.statusbar",
+      "file": "plugins/cordova-plugin-statusbar/www/statusbar.js",
+      "pluginId": "cordova-plugin-statusbar",
+      "clobbers": [
+        "window.StatusBar"
+      ]
+    },
+    {
+      "id": "cordova-sms-plugin.Sms",
+      "file": "plugins/cordova-sms-plugin/www/sms.js",
+      "pluginId": "cordova-sms-plugin",
+      "clobbers": [
+        "window.sms"
+      ]
     }
   ];
   module.exports.metadata = {
-    "cordova-plugin-email-composer": "0.9.2",
+    "com-badrit-base64": "0.2.0",
     "cordova-plugin-file": "6.0.2",
     "cordova-plugin-advanced-http": "3.0.0",
-    "cordova-plugin-camera": "4.1.0",
-    "com-badrit-base64": "0.2.0",
-    "cordova-plugin-network-information": "2.0.2",
-    "cordova-plugin-statusbar": "2.4.2",
-    "cordova-plugin-device": "2.0.2",
-    "cordova-plugin-splashscreen": "5.0.2",
-    "cordova-plugin-ionic-webview": "4.2.1",
-    "cordova-plugin-ionic-keyboard": "2.2.0",
-    "cordova-sms-plugin": "1.0.0",
-    "cordova-plugin-datepicker": "0.9.3",
-    "cordova-plugin-whitelist": "1.3.4",
     "cordova-plugin-badge": "0.8.8",
-    "cordova-plugin-local-notification": "0.9.0-beta.2"
+    "cordova-plugin-camera": "4.1.0",
+    "cordova-plugin-datepicker": "0.9.3",
+    "cordova-plugin-device": "2.0.2",
+    "cordova-plugin-email-composer": "0.9.2",
+    "cordova-plugin-ionic-keyboard": "2.2.0",
+    "cordova-plugin-ionic-webview": "4.2.1",
+    "cordova-plugin-local-notification": "0.9.0-beta.2",
+    "cordova-plugin-network-information": "2.0.2",
+    "cordova-plugin-splashscreen": "5.0.2",
+    "cordova-plugin-statusbar": "2.4.2",
+    "cordova-plugin-whitelist": "1.3.4",
+    "cordova-sms-plugin": "1.0.0"
   };
 });

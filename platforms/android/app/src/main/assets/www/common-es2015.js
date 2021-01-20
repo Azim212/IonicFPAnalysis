@@ -446,7 +446,7 @@ const openURL = async (url, ev, direction, animation) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ("<ion-content>\n  <img [src]=\"imagedisplay\">\n</ion-content>\n");
+/* harmony default export */ __webpack_exports__["default"] = ("<ion-content>\r\n  <img [src]=\"imagedisplay\">\r\n</ion-content>");
 
 /***/ }),
 
@@ -480,7 +480,7 @@ __webpack_require__.r(__webpack_exports__);
 let SessionViewImageDiscussionPage = class SessionViewImageDiscussionPage {
     constructor() { }
     ngOnInit() {
-        console.log(`${this.imagedisplay}`);
+        console.log(this.imagedisplay);
     }
 };
 SessionViewImageDiscussionPage = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([

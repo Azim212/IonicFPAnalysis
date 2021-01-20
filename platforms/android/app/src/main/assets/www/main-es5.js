@@ -132,7 +132,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     /* harmony default export */
 
 
-    __webpack_exports__["default"] = "<ion-app>\n  <ion-router-outlet></ion-router-outlet>\n</ion-app>\n";
+    __webpack_exports__["default"] = "<ion-app>\r\n  <ion-router-outlet></ion-router-outlet>\r\n</ion-app>\r\n";
     /***/
   },
 
@@ -791,7 +791,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       _classCallCheck(this, apiurl);
     };
 
-    apiurl.apiUrl = 'http://slpwsdev.azurewebsites.net/api/';
+    apiurl.apiUrl = 'https://slpidev.azurewebsites.net/api/';
 
     var emptybackground = function emptybackground() {
       _classCallCheck(this, emptybackground);
@@ -2166,7 +2166,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
   /***/
   function _(module, exports, __webpack_require__) {
     module.exports = __webpack_require__(
-    /*! C:\working\NYP_Proj\ionic_project\FSP_SLP_APPAI\src\main.ts */
+    /*! C:\Users\L30903\Documents\GitHub\IonicFPAnalysis\src\main.ts */
     "./src/main.ts");
     /***/
   }

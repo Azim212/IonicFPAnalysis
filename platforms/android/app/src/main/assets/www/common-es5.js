@@ -678,7 +678,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     /* harmony default export */
 
 
-    __webpack_exports__["default"] = "<ion-content>\n  <img [src]=\"imagedisplay\">\n</ion-content>\n";
+    __webpack_exports__["default"] = "<ion-content>\r\n  <img [src]=\"imagedisplay\">\r\n</ion-content>";
     /***/
   },
 
@@ -742,7 +742,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       _createClass(SessionViewImageDiscussionPage, [{
         key: "ngOnInit",
         value: function ngOnInit() {
-          console.log("".concat(this.imagedisplay));
+          console.log(this.imagedisplay);
         }
       }]);
 

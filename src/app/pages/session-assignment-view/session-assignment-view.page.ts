@@ -28,6 +28,7 @@ export class SessionAssignmentViewPage implements OnInit {
   refreshvalue: boolean = false;
   test3: any;
   @ViewChild('barChart') barChart;
+  @ViewChild('cardChart') cardChart;
   bars: any;
 
   constructor(private ngZone: NgZone, private nativeHttp: HTTP, private globalService: GlobalService, private platform: Platform, private sessionmypage: SessionMyPage, public dms: DomSanitizer, private router: Router, private activatedRoute: ActivatedRoute, private modalController: ModalController, private assignmentsService: AssignmentsService, private storage: Storage, private networkService: NetworkService) { }
@@ -244,6 +245,38 @@ export class SessionAssignmentViewPage implements OnInit {
     console.log("ctx: ", this.barChart.nativeElement)
     let ctx = this.barChart.nativeElement
     ctx.height = 1000
+    console.log(this.asgmtdiscusslist)
+
+    // Fetching data from API
+    // let jsonData = {
+    //   Authentication_Token: this.token,
+    //   // Student_Id: this.studentid, // student id can be added if only data from this student is required.
+    //   Asgmt_Id: this.asgmtid,
+    //   AsgmtDiscuss_Id: this.asgmtdiscusslist
+    // }
+
+    // console.log("JSON Data: ", jsonData)
+
+    // var myHeaders = new Headers();
+    // myHeaders.append("Content-Type", "application/json");
+
+    // // https://stackoverflow.com/questions/43262121/trying-to-use-fetch-and-pass-in-mode-no-cors
+    // var proxyUrl = "https://serene-shelf-84252.herokuapp.com/" //proxy for CORS
+    // var dbApiUrl = "https://slpidev.azurewebsites.net/api/analysis/viewAnalysisAsgmtDiscuss"
+
+    // var requestOptions: RequestInit = {
+    //   method: 'POST',
+    //   headers: myHeaders,
+    //   body: JSON.stringify(jsonData),
+    //   redirect: 'follow'
+    // };
+
+    // fetch(proxyUrl + dbApiUrl, requestOptions)
+    //   .then(response => response.text())
+    //   .then(result => {
+    //     console.log(result)
+    //   })
+    //   .catch(error => console.log('error: ', error));
 
     // Student id, assignment id, assignment discussion id, bored dur, frus dur, duration
     let datasets = 10
@@ -276,7 +309,7 @@ export class SessionAssignmentViewPage implements OnInit {
       asgmt_id++
     }
 
-
+    // Bar Chart creation
     this.bars = new Chart(ctx, {
       type: 'horizontalBar',
       data: {

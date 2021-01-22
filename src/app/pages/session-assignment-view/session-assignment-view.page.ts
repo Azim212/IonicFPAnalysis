@@ -242,105 +242,99 @@ export class SessionAssignmentViewPage implements OnInit {
     return await modal.present();
   }
   createBarChart() {
-    console.log("ctx: ", this.barChart.nativeElement)
     let ctx = this.barChart.nativeElement
     ctx.height = 1000
-    console.log(this.asgmtdiscusslist)
 
     // Fetching data from API
-    // let jsonData = {
-    //   Authentication_Token: this.token,
-    //   // Student_Id: this.studentid, // student id can be added if only data from this student is required.
-    //   Asgmt_Id: this.asgmtid,
-    //   AsgmtDiscuss_Id: this.asgmtdiscusslist
+    // for (var i = 0; i < this.asgmtdiscusslist.length; i++) {
+    //   let jsonData = {
+    //     Authentication_Token: this.token,
+    //     Asgmt_Id: this.asgmtid[0],
+    //     AsgmtDiscuss_Id: this.asgmtdiscusslist[i].asgmtDiscuss_Id
+    //   }
+    //   jsonDataArray.push(jsonData)
     // }
-
-    // console.log("JSON Data: ", jsonData)
-
-    // var myHeaders = new Headers();
-    // myHeaders.append("Content-Type", "application/json");
-
-    // // https://stackoverflow.com/questions/43262121/trying-to-use-fetch-and-pass-in-mode-no-cors
-    // var proxyUrl = "https://serene-shelf-84252.herokuapp.com/" //proxy for CORS
-    // var dbApiUrl = "https://slpidev.azurewebsites.net/api/analysis/viewAnalysisAsgmtDiscuss"
-
-    // var requestOptions: RequestInit = {
-    //   method: 'POST',
-    //   headers: myHeaders,
-    //   body: JSON.stringify(jsonData),
-    //   redirect: 'follow'
-    // };
-
-    // fetch(proxyUrl + dbApiUrl, requestOptions)
-    //   .then(response => response.text())
-    //   .then(result => {
-    //     console.log(result)
-    //   })
-    //   .catch(error => console.log('error: ', error));
-
-    // Student id, assignment id, assignment discussion id, bored dur, frus dur, duration
-    let datasets = 10
-
-    let student_id = 1
-    let asgmt_id = 1
-    let asgmt_disc_id = 1
-    let bored_dur = 8
-    let frus_dur = 12
-    let total_dur = 30
-
-    let xAxisLabels = [];
-    let boredDurData = [];
-    let frusDurData = [];
-    let totalDurData = [];
-
-    for (var i = 0; i < datasets; i++) {
-      let tmp = student_id + ", " + asgmt_id + ", " + asgmt_disc_id
-
-      boredDurData.push(bored_dur)
-      frusDurData.push(frus_dur)
-      totalDurData.push(total_dur)
-      xAxisLabels.push(tmp)
-
-      bored_dur = bored_dur + 2
-      frus_dur = frus_dur + 1
-      total_dur = total_dur + 5
-      student_id++
-      asgmt_disc_id++
-      asgmt_id++
+    let jsonData = {
+      Authentication_Token: this.token,
+      Asgmt_Id: this.asgmtid[0],
+      // even tho asgmtDiscuss_Id needs to be specified, 
+      // the api will return data from all asgmtDiscuss_Ids. No need to iterate through
+      AsgmtDiscuss_Id: this.asgmtdiscusslist[0].asgmtDiscuss_Id
     }
 
-    // Bar Chart creation
-    this.bars = new Chart(ctx, {
-      type: 'horizontalBar',
-      data: {
-        labels: xAxisLabels,
-        datasets: [{
-          label: "Boredom",
-          data: boredDurData,
-          backgroundColor: 'rgb(0, 85, 255)',
-        },
-        {
-          label: "Frustration",
-          data: frusDurData,
-          backgroundColor: 'rgb(255, 0, 0)',
-        },
-        {
-          label: "Total",
-          data: totalDurData,
-          backgroundColor: 'rgb(69, 69, 69)',
-        }]
-      },
-      options: {
-        scales: {
-          yAxes: [{
-            ticks: {
-              beginAtZero: true
-            }
-          }]
-        }
+    this.fetchChartData(jsonData).then(fetchData => {
+      // console.log(fetchData)
+      let xAxisLabels = [];
+      let boredDurData = [];
+      let frusDurData = [];
+      let totalDurData = [];
+
+      for (var i = 0; i < fetchData.length; i++) {
+        let entry = fetchData[i]
+        let tmp = entry.student_Username + ", " + entry.asgmtDiscuss_Id.substring(0, 6)
+
+        boredDurData.push(entry.boredomDuration)
+        frusDurData.push(entry.frustDuration)
+        totalDurData.push(entry.duration)
+        xAxisLabels.push(tmp)
       }
+
+      // Bar Chart creation
+      this.bars = new Chart(ctx, {
+        type: 'horizontalBar',
+        data: {
+          labels: xAxisLabels,
+          datasets: [{
+            label: "Boredom",
+            data: boredDurData,
+            backgroundColor: 'rgb(0, 85, 255)',
+          },
+          {
+            label: "Frustration",
+            data: frusDurData,
+            backgroundColor: 'rgb(255, 0, 0)',
+          },
+          {
+            label: "Total",
+            data: totalDurData,
+            backgroundColor: 'rgb(69, 69, 69)',
+          }]
+        },
+        options: {
+          scales: {
+            yAxes: [{
+              ticks: {
+                beginAtZero: true
+              }
+            }]
+          }
+        }
+      })
     })
-
-
   }
+  fetchChartData(jsonData) {
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+
+    // https://stackoverflow.com/questions/43262121/trying-to-use-fetch-and-pass-in-mode-no-cors
+    var proxyUrl = "https://serene-shelf-84252.herokuapp.com/" //proxy for CORS
+    var dbApiUrl = "https://slpidev.azurewebsites.net/api/analysis/viewAnalysisAsgmtDiscuss"
+
+    return fetch(proxyUrl + dbApiUrl, {
+      method: "POST",
+      headers: myHeaders,
+      body: JSON.stringify(jsonData),
+      redirect: "follow"
+    }).then(resp => resp.json())
+
+    // return Promise.all(jsonDataArray.map(jsonData =>
+    //   fetch(proxyUrl + dbApiUrl, {
+    //     method: 'POST',
+    //     headers: myHeaders,
+    //     body: JSON.stringify(jsonData),
+    //     redirect: 'follow'
+    //   }).then(resp => resp.json())
+    // ))
+  }
+
 }

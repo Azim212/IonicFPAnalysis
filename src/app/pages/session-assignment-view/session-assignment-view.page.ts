@@ -1,7 +1,7 @@
 import { Component, OnInit, NgZone, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AssignmentsService } from '../../services/assignments.service';
-import { ModalController, Platform } from '@ionic/angular';
+import { LoadingController, ModalController, Platform } from '@ionic/angular';
 import { SessionAssignmentChatPage } from '../../pages/session-assignment-chat/session-assignment-chat.page';
 import { Storage } from '@ionic/storage';
 import { NetworkService } from '../../services/network.service';
@@ -31,8 +31,8 @@ export class SessionAssignmentViewPage implements OnInit {
   @ViewChild('cardChart') cardChart;
   bars: any;
 
-  constructor(private ngZone: NgZone, private nativeHttp: HTTP, private globalService: GlobalService, private platform: Platform, private sessionmypage: SessionMyPage, public dms: DomSanitizer, private router: Router, private activatedRoute: ActivatedRoute, private modalController: ModalController, private assignmentsService: AssignmentsService, private storage: Storage, private networkService: NetworkService) { }
-
+  constructor(private ngZone: NgZone, private nativeHttp: HTTP, private globalService: GlobalService, private platform: Platform, private sessionmypage: SessionMyPage, public loadingController: LoadingController, public dms: DomSanitizer, private router: Router, private activatedRoute: ActivatedRoute, private modalController: ModalController, private assignmentsService: AssignmentsService, private storage: Storage, private networkService: NetworkService) { }
+  loading: any;
   //Segment
   segmentModel = "assignment"; isactiveassignment: string; isactivevideoorvoice: string; isactiveanalysis: string; asgmtid: any; sessionid: any;
   //User Info
@@ -160,13 +160,11 @@ export class SessionAssignmentViewPage implements OnInit {
       this.isactiveassignment = "inactivesegment";
       this.isactivevideoorvoice = "activesegment";
       this.isactiveanalysis = "inactivesegment";
-
     }
     else if (this.segmentModel == "assignment") {
       this.isactiveassignment = "activesegment";
       this.isactivevideoorvoice = "inactivesegment";
       this.isactiveanalysis = "inactivesegment";
-
     }
     else if (this.segmentModel == "analysis") {
       this.isactiveassignment = "inactivesegment";
@@ -174,6 +172,7 @@ export class SessionAssignmentViewPage implements OnInit {
       this.isactiveanalysis = "activesegment";
 
       this.createBarChart();
+      this.presentLoading();
     }
   }
   /*Chat Pop up*/
@@ -221,6 +220,19 @@ export class SessionAssignmentViewPage implements OnInit {
   display(bImg: string) {
     return this.dms.bypassSecurityTrustResourceUrl("data:image/png;base64, " + bImg)
   }
+  //Loading Pop up
+  async presentLoading() {
+    // Prepare a loading controller
+    this.loading = await this.loadingController.create({
+      message: 'Please Wait',
+      cssClass: 'custom-class custom-loading',
+      duration: 60000,
+      backdropDismiss: false
+    });
+    // Present the loading controller
+
+    await this.loading.present();
+  }
   //Display Image 
   async presentModalImage(imgdisplayinapp) {
     const modal = await this.modalController.create({
@@ -243,7 +255,6 @@ export class SessionAssignmentViewPage implements OnInit {
   }
   createBarChart() {
     let ctx = this.barChart.nativeElement
-    ctx.height = 1000
 
     // Fetching data from API
     // for (var i = 0; i < this.asgmtdiscusslist.length; i++) {
@@ -287,12 +298,12 @@ export class SessionAssignmentViewPage implements OnInit {
           datasets: [{
             label: "Boredom",
             data: boredDurData,
-            backgroundColor: 'rgb(0, 85, 255)',
+            backgroundColor: 'rgb(212, 168, 110)',
           },
           {
             label: "Frustration",
             data: frusDurData,
-            backgroundColor: 'rgb(255, 0, 0)',
+            backgroundColor: 'rgb(255, 105, 105)',
           },
           {
             label: "Total",
@@ -310,6 +321,7 @@ export class SessionAssignmentViewPage implements OnInit {
           }
         }
       })
+      this.loading.dismiss();
     })
   }
   fetchChartData(jsonData) {

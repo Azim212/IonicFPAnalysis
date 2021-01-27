@@ -1,4 +1,4 @@
-import { Component, OnInit, NgZone, ViewChild } from '@angular/core';
+import { Component, OnInit, NgZone, ViewChild, SecurityContext } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AssignmentsService } from '../../services/assignments.service';
 import { LoadingController, ModalController, Platform } from '@ionic/angular';
@@ -255,16 +255,6 @@ export class SessionAssignmentViewPage implements OnInit {
   }
   createBarChart() {
     let ctx = this.barChart.nativeElement
-
-    // Fetching data from API
-    // for (var i = 0; i < this.asgmtdiscusslist.length; i++) {
-    //   let jsonData = {
-    //     Authentication_Token: this.token,
-    //     Asgmt_Id: this.asgmtid[0],
-    //     AsgmtDiscuss_Id: this.asgmtdiscusslist[i].asgmtDiscuss_Id
-    //   }
-    //   jsonDataArray.push(jsonData)
-    // }
     let jsonData = {
       Authentication_Token: this.token,
       Asgmt_Id: this.asgmtid[0],
@@ -274,14 +264,14 @@ export class SessionAssignmentViewPage implements OnInit {
     }
 
     this.fetchChartData(jsonData).then(fetchData => {
-      // console.log(fetchData)
+      let latestFirstData = fetchData.reverse()
       let xAxisLabels = [];
       let boredDurData = [];
       let frusDurData = [];
       let totalDurData = [];
 
-      for (var i = 0; i < fetchData.length; i++) {
-        let entry = fetchData[i]
+      for (var i = 0; i < latestFirstData.length; i++) {
+        let entry = latestFirstData[i]
         let tmp = entry.student_Username + ", " + entry.asgmtDiscuss_Id.substring(0, 6)
 
         boredDurData.push(entry.boredomDuration)
@@ -314,7 +304,7 @@ export class SessionAssignmentViewPage implements OnInit {
         options: {
           tooltips: {
             enabled: false,
-            custom: function (tooltipModel) {
+            custom: (tooltipModel) => {
               // Tooltip Element
               var tooltipEl = document.getElementById('chartjs-tooltip');
 
@@ -339,7 +329,6 @@ export class SessionAssignmentViewPage implements OnInit {
               // Set caret Position
               tooltipEl.classList.remove('above', 'below', 'no-transform');
               if (tooltipModel.yAlign) {
-                console.log(tooltipModel.yAlign)
                 tooltipEl.classList.add(tooltipModel.yAlign);
               } else {
                 tooltipEl.classList.add('no-transform');
@@ -353,22 +342,28 @@ export class SessionAssignmentViewPage implements OnInit {
               if (tooltipModel.body) {
                 var titleLines = tooltipModel.title || [];
                 var bodyLines = tooltipModel.body.map(getBody);
+                let imgSrc;
 
-                // img of asgmtDisc
-                var imgSrc = "https://images.theconversation.com/files/93616/original/image-20150902-6700-t2axrz.jpg?ixlib=rb-1.1.0&q=45&auto=format&w=1000&fit=clip"
-                var innerHtml = '<img src="' + imgSrc + '" alt="google" width="150" height="150"></img>'
+                // getting img of asgmtDisc
+                for (var i = 0; i < this.asgmtdiscusslist.length; i++) {
+                  var chartTitle = tooltipModel.title[0].substring(tooltipModel.title[0].indexOf(",") + 1, tooltipModel.title[0].length).trim()
+                  if (this.asgmtdiscusslist[i].asgmtDiscuss_Id.substring(0, 6) == chartTitle) {
+                    imgSrc = this.asgmtdiscusslist[i].asgmtDiscuss_Data
+                  }
+                }
+
+                let sanitisedImg = this.dms.sanitize(SecurityContext.HTML, this.dms.bypassSecurityTrustHtml("data:image/png;base64, " + imgSrc));
+                var innerHtml = '<img src="' + sanitisedImg
+                  + '" alt="google" width="150" height="150"></img>'
 
                 innerHtml += '<table><thead>';
-
                 titleLines.forEach(function (title) {
                   innerHtml += '<tr><th>' + title + '</th></tr>';
                 });
                 innerHtml += '</thead><tbody>';
 
-
                 bodyLines.forEach(function (body, i) {
                   var colors = tooltipModel.labelColors[i];
-                  console.log(tooltipModel.labelColors)
                   var style = 'background:' + colors.backgroundColor;
                   style += '; border-color:' + colors.borderColor;
                   style += '; border-width: 2px'

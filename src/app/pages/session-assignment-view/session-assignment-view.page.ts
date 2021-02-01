@@ -288,17 +288,17 @@ export class SessionAssignmentViewPage implements OnInit {
           datasets: [{
             label: "Bored",
             data: boredDurData,
-            backgroundColor: 'rgb(26, 199, 230)',
+            backgroundColor: 'rgb(212, 168, 110)',
           },
           {
             label: "Frustrated",
             data: frusDurData,
-            backgroundColor: 'rgb(25, 170, 222)',
+            backgroundColor: 'rgb(255, 105, 105)',
           },
           {
             label: "Total",
             data: totalDurData,
-            backgroundColor: 'rgb(23, 107, 160)',
+            backgroundColor: 'rgb(186, 194, 194)',
           }]
         },
         options: {
@@ -306,19 +306,19 @@ export class SessionAssignmentViewPage implements OnInit {
             enabled: false,
             custom: (tooltipModel) => {
               // Tooltip Element
-              var tooltipEl = document.getElementById('chartjs-tooltip');
+              var tooltipEl = document.getElementById('tapPopupInfo');
 
               // Create element on first render
-              if (!tooltipEl) {
-                tooltipEl = document.createElement('div');
-                tooltipEl.id = 'chartjs-tooltip';
-                tooltipEl.style.background = "rgba(0, 0, 0, .7)";
-                tooltipEl.style.color = "white";
-                tooltipEl.style.borderRadius = "3px";
-                tooltipEl.style.transition = "opacity .1s ease";
-                tooltipEl.style.transform = "translate(-50%, 0)";
-                document.body.appendChild(tooltipEl);
-              }
+              // if (!tooltipEl) {
+              //   tooltipEl = document.createElement('div');
+              //   tooltipEl.id = 'chartjs-tooltip';
+              //   tooltipEl.style.background = "rgba(0, 0, 0, .7)";
+              //   tooltipEl.style.color = "white";
+              //   tooltipEl.style.borderRadius = "3px";
+              //   tooltipEl.style.transition = "opacity .1s ease";
+              //   tooltipEl.style.transform = "translate(-50%, 0)";
+              //   document.body.appendChild(tooltipEl);
+              // }
 
               // Hide if no tooltip
               if (tooltipModel.opacity === 0) {
@@ -327,12 +327,12 @@ export class SessionAssignmentViewPage implements OnInit {
               }
 
               // Set caret Position
-              tooltipEl.classList.remove('above', 'below', 'no-transform');
-              if (tooltipModel.yAlign) {
-                tooltipEl.classList.add(tooltipModel.yAlign);
-              } else {
-                tooltipEl.classList.add('no-transform');
-              }
+              // tooltipEl.classList.remove('above', 'below', 'no-transform');
+              // if (tooltipModel.yAlign) {
+              //   tooltipEl.classList.add(tooltipModel.yAlign);
+              // } else {
+              //   tooltipEl.classList.add('no-transform');
+              // }
 
               function getBody(bodyItem) {
                 return bodyItem.lines;
@@ -381,14 +381,14 @@ export class SessionAssignmentViewPage implements OnInit {
 
               // Display, position, and set styles for font
               tooltipEl.style.opacity = "1";
-              tooltipEl.style.position = 'absolute';
-              tooltipEl.style.left = position.left + window.pageXOffset + tooltipModel.caretX + 'px';
-              tooltipEl.style.top = position.top + window.pageYOffset + tooltipModel.caretY + 'px';
-              tooltipEl.style.fontFamily = tooltipModel._bodyFontFamily;
-              tooltipEl.style.fontSize = tooltipModel.bodyFontSize + 'px';
-              tooltipEl.style.fontStyle = tooltipModel._bodyFontStyle;
-              tooltipEl.style.padding = tooltipModel.yPadding + 'px ' + tooltipModel.xPadding + 'px';
-              tooltipEl.style.pointerEvents = 'none';
+              // tooltipEl.style.position = 'absolute';
+              // tooltipEl.style.left = position.left + window.pageXOffset + tooltipModel.caretX + 'px';
+              // tooltipEl.style.top = position.top + window.pageYOffset + tooltipModel.caretY + 'px';
+              // tooltipEl.style.fontFamily = tooltipModel._bodyFontFamily;
+              // tooltipEl.style.fontSize = tooltipModel.bodyFontSize + 'px';
+              // tooltipEl.style.fontStyle = tooltipModel._bodyFontStyle;
+              // tooltipEl.style.padding = tooltipModel.yPadding + 'px ' + tooltipModel.xPadding + 'px';
+              // tooltipEl.style.pointerEvents = 'none';
             }
           },
           scales: {
@@ -397,7 +397,7 @@ export class SessionAssignmentViewPage implements OnInit {
                 beginAtZero: true
               }
             }]
-          }
+          },
         }
       })
       this.loading.dismiss();

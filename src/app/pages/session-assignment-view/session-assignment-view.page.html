@@ -82,11 +82,15 @@
   <div [hidden]="!(segmentModel === 'analysis')">
     <ion-card class="card-chart" #cardChart>
       <ion-card-header>
-        <ion-card-subtitle>IN SECONDS</ion-card-subtitle>
-        <ion-card-title>Duration of Emotion Experienced</ion-card-title>
+        <ion-card-title>Emotion Analysis (s)</ion-card-title>
       </ion-card-header>
       <ion-card-content>
-        <canvas #barChart height="1026" width="616"></canvas>
+        <div class="chartWrapper">
+          <canvas id="analysisBarChart" #barChart height="1026" width="616"></canvas>
+        </div>
+        <div id="tapPopupInfo">
+
+        </div>
       </ion-card-content>
     </ion-card>
   </div>

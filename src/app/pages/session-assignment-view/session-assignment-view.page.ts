@@ -29,6 +29,7 @@ export class SessionAssignmentViewPage implements OnInit {
   test3: any;
   @ViewChild('barChart') barChart;
   @ViewChild('cardChart') cardChart;
+  @ViewChild('axisCanvas') axisCanvas;
   bars: any;
 
   constructor(private ngZone: NgZone, private nativeHttp: HTTP, private globalService: GlobalService, private platform: Platform, private sessionmypage: SessionMyPage, public loadingController: LoadingController, public dms: DomSanitizer, private router: Router, private activatedRoute: ActivatedRoute, private modalController: ModalController, private assignmentsService: AssignmentsService, private storage: Storage, private networkService: NetworkService) { }
@@ -281,6 +282,8 @@ export class SessionAssignmentViewPage implements OnInit {
       }
 
       // Bar Chart creation
+      var rectangleSet = false;
+
       this.bars = new Chart(ctx, {
         type: 'horizontalBar',
         data: {
@@ -289,16 +292,20 @@ export class SessionAssignmentViewPage implements OnInit {
             label: "Bored",
             data: boredDurData,
             backgroundColor: 'rgb(212, 168, 110)',
+            hoverBackgroundColor: 'rgb(145, 113, 70)'
+
           },
           {
             label: "Frustrated",
             data: frusDurData,
             backgroundColor: 'rgb(255, 105, 105)',
+            hoverBackgroundColor: 'rgb(173, 64, 64)'
           },
           {
             label: "Total",
             data: totalDurData,
-            backgroundColor: 'rgb(186, 194, 194)',
+            backgroundColor: 'rgb(47, 196, 50)',
+            hoverBackgroundColor: 'rgb(35, 145, 37)'
           }]
         },
         options: {
@@ -308,31 +315,11 @@ export class SessionAssignmentViewPage implements OnInit {
               // Tooltip Element
               var tooltipEl = document.getElementById('tapPopupInfo');
 
-              // Create element on first render
-              // if (!tooltipEl) {
-              //   tooltipEl = document.createElement('div');
-              //   tooltipEl.id = 'chartjs-tooltip';
-              //   tooltipEl.style.background = "rgba(0, 0, 0, .7)";
-              //   tooltipEl.style.color = "white";
-              //   tooltipEl.style.borderRadius = "3px";
-              //   tooltipEl.style.transition = "opacity .1s ease";
-              //   tooltipEl.style.transform = "translate(-50%, 0)";
-              //   document.body.appendChild(tooltipEl);
-              // }
-
               // Hide if no tooltip
               if (tooltipModel.opacity === 0) {
                 tooltipEl.style.opacity = "0";
                 return;
               }
-
-              // Set caret Position
-              // tooltipEl.classList.remove('above', 'below', 'no-transform');
-              // if (tooltipModel.yAlign) {
-              //   tooltipEl.classList.add(tooltipModel.yAlign);
-              // } else {
-              //   tooltipEl.classList.add('no-transform');
-              // }
 
               function getBody(bodyItem) {
                 return bodyItem.lines;
@@ -341,6 +328,9 @@ export class SessionAssignmentViewPage implements OnInit {
               // Set Text
               if (tooltipModel.body) {
                 var titleLines = tooltipModel.title || [];
+                var studentName = titleLines[0].substring(0, titleLines[0].indexOf(","))
+                var asgmtDiscussId = titleLines[0].substring(titleLines[0].indexOf(",") + 2, titleLines[0].length)
+
                 var bodyLines = tooltipModel.body.map(getBody);
                 let imgSrc;
 
@@ -353,14 +343,13 @@ export class SessionAssignmentViewPage implements OnInit {
                 }
 
                 let sanitisedImg = this.dms.sanitize(SecurityContext.HTML, this.dms.bypassSecurityTrustHtml("data:image/png;base64, " + imgSrc));
-                var innerHtml = '<img src="' + sanitisedImg
-                  + '" alt="google" width="150" height="150"></img>'
+                var innerHtml = '<ion-row><ion-col size="6"><img src="' + sanitisedImg
+                  + '" alt="google" width="150" height="150"></img> </ion-col>'
 
-                innerHtml += '<table><thead>';
-                titleLines.forEach(function (title) {
-                  innerHtml += '<tr><th>' + title + '</th></tr>';
-                });
-                innerHtml += '</thead><tbody>';
+                innerHtml += '<ion-col size="6"><table><tbody>';
+                innerHtml += '<tr><td>Student: ' + studentName + '</td></tr>'
+                innerHtml += '<tr><td>Discuss Id: ' + asgmtDiscussId + '</td></tr>'
+                // innerHtml += '';
 
                 bodyLines.forEach(function (body, i) {
                   var colors = tooltipModel.labelColors[i];
@@ -371,7 +360,7 @@ export class SessionAssignmentViewPage implements OnInit {
                   var span = '<span style="' + style + '"></span>';
                   innerHtml += '<tr><td>' + span + body + '</td></tr>';
                 });
-                innerHtml += '</tbody></table>';
+                innerHtml += '</tbody></table></ion-col></ion-row>';
 
                 tooltipEl.innerHTML = innerHtml;
               }
@@ -381,14 +370,8 @@ export class SessionAssignmentViewPage implements OnInit {
 
               // Display, position, and set styles for font
               tooltipEl.style.opacity = "1";
-              // tooltipEl.style.position = 'absolute';
-              // tooltipEl.style.left = position.left + window.pageXOffset + tooltipModel.caretX + 'px';
-              // tooltipEl.style.top = position.top + window.pageYOffset + tooltipModel.caretY + 'px';
-              // tooltipEl.style.fontFamily = tooltipModel._bodyFontFamily;
-              // tooltipEl.style.fontSize = tooltipModel.bodyFontSize + 'px';
-              // tooltipEl.style.fontStyle = tooltipModel._bodyFontStyle;
-              // tooltipEl.style.padding = tooltipModel.yPadding + 'px ' + tooltipModel.xPadding + 'px';
-              // tooltipEl.style.pointerEvents = 'none';
+              tooltipEl.style.color = "black";
+              tooltipEl.style.transition = "all 0.2s ease";
             }
           },
           scales: {
@@ -396,11 +379,26 @@ export class SessionAssignmentViewPage implements OnInit {
               ticks: {
                 beginAtZero: true
               }
-            }]
+            }],
           },
+          maintainAspectRatio: false
         }
       })
+
       this.loading.dismiss();
+
+      // Complicated looking but it's essentially just maintaining the bar sizes for every dataset to be consistent
+      // since they vary in length and will look weird if scaled normally.
+      var fiddleFactor = 1.05
+      var ratio = xAxisLabels.length * fiddleFactor / 13
+      var containerHeight = 1026
+      var chartWrapper = document.getElementById("chartWrapper")
+      var height = 300
+      var calcHeight = containerHeight * ratio
+      if (calcHeight < height) {
+        calcHeight = height
+      }
+      chartWrapper.style.height = calcHeight + "px"
     })
   }
   fetchChartData(jsonData) {

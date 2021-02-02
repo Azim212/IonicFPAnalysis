@@ -85,12 +85,14 @@
         <ion-card-title>Emotion Analysis (s)</ion-card-title>
       </ion-card-header>
       <ion-card-content>
-        <div class="chartWrapper">
-          <canvas id="analysisBarChart" #barChart height="1026" width="616"></canvas>
+        <div id="chartRapper">
+          <div id="chartWrapper">
+            <canvas id="analysisBarChart" #barChart height="1026" width="616"></canvas>
+          </div>
+          <canvas id="axis-Test" #axisCanvas height="300" width="0"></canvas>
         </div>
-        <div id="tapPopupInfo">
-
-        </div>
+        <ion-grid id="tapPopupInfo">
+        </ion-grid>
       </ion-card-content>
     </ion-card>
   </div>

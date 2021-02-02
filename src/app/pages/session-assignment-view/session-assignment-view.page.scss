@@ -20,7 +20,11 @@
   overflow: scroll;
 }
 
-.chartWrapper {
-  height: 220px;
+#chartRapper {
+  height: 300px;
   overflow-y: scroll;
+}
+
+#tapPopupInfo {
+  padding-top:15px;
 }

@@ -29,7 +29,6 @@ export class SessionAssignmentViewPage implements OnInit {
   test3: any;
   @ViewChild('barChart') barChart;
   @ViewChild('cardChart') cardChart;
-  @ViewChild('axisCanvas') axisCanvas;
   bars: any;
 
   constructor(private ngZone: NgZone, private nativeHttp: HTTP, private globalService: GlobalService, private platform: Platform, private sessionmypage: SessionMyPage, public loadingController: LoadingController, public dms: DomSanitizer, private router: Router, private activatedRoute: ActivatedRoute, private modalController: ModalController, private assignmentsService: AssignmentsService, private storage: Storage, private networkService: NetworkService) { }
@@ -282,8 +281,6 @@ export class SessionAssignmentViewPage implements OnInit {
       }
 
       // Bar Chart creation
-      var rectangleSet = false;
-
       this.bars = new Chart(ctx, {
         type: 'horizontalBar',
         data: {
@@ -317,7 +314,11 @@ export class SessionAssignmentViewPage implements OnInit {
 
               // Hide if no tooltip
               if (tooltipModel.opacity === 0) {
-                tooltipEl.style.opacity = "0";
+                tooltipEl.style.visibility = "hidden";
+                if (document.getElementById("helpText") != null) {
+                  document.getElementById("helpText").style.display = "block"
+                  document.getElementById("helpText").style.visibility = "visible"
+                }
                 return;
               }
 
@@ -342,14 +343,14 @@ export class SessionAssignmentViewPage implements OnInit {
                   }
                 }
 
+                var innerHtml = '<ion-row id="helpText"><ion-col>Tap on the graph for more information!</ion-col></ion-row>'
                 let sanitisedImg = this.dms.sanitize(SecurityContext.HTML, this.dms.bypassSecurityTrustHtml("data:image/png;base64, " + imgSrc));
-                var innerHtml = '<ion-row><ion-col size="6"><img src="' + sanitisedImg
+                innerHtml += '<ion-row><ion-col size="6"><img src="' + sanitisedImg
                   + '" alt="google" width="150" height="150"></img> </ion-col>'
 
                 innerHtml += '<ion-col size="6"><table><tbody>';
                 innerHtml += '<tr><td>Student: ' + studentName + '</td></tr>'
                 innerHtml += '<tr><td>Discuss Id: ' + asgmtDiscussId + '</td></tr>'
-                // innerHtml += '';
 
                 bodyLines.forEach(function (body, i) {
                   var colors = tooltipModel.labelColors[i];
@@ -369,9 +370,11 @@ export class SessionAssignmentViewPage implements OnInit {
               var position = ctx.getBoundingClientRect();
 
               // Display, position, and set styles for font
-              tooltipEl.style.opacity = "1";
+              tooltipEl.style.visibility = "visible";
               tooltipEl.style.color = "black";
-              tooltipEl.style.transition = "all 0.2s ease";
+              // tooltipEl.style.transition = "all 0.2s ease";
+
+              document.getElementById("helpText").style.display = "none"
             }
           },
           scales: {
@@ -386,11 +389,12 @@ export class SessionAssignmentViewPage implements OnInit {
       })
 
       this.loading.dismiss();
+      document.getElementById("helpText").style.display = "block"
 
       // Complicated looking but it's essentially just maintaining the bar sizes for every dataset to be consistent
       // since they vary in length and will look weird if scaled normally.
       var fiddleFactor = 1.05
-      var ratio = xAxisLabels.length * fiddleFactor / 13
+      var ratio = xAxisLabels.length * fiddleFactor / 15
       var containerHeight = 1026
       var chartWrapper = document.getElementById("chartWrapper")
       var height = 300
